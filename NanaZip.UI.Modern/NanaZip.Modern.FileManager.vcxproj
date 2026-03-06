@@ -5,7 +5,8 @@
     <RootNamespace>NanaZip.Modern.FileManager</RootNamespace>
     <MileProjectType>WindowsApplication</MileProjectType>
     <MileProjectManifestFile>NanaZip.Modern.FileManager.manifest</MileProjectManifestFile>
-    <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformMinVersion>10.0.26100.0</WindowsTargetPlatformMinVersion>
+    <MileUniCrtDisableRuntimeDebuggingFeature>true</MileUniCrtDisableRuntimeDebuggingFeature>
     <MileProjectEnableCppWinRTSupport>true</MileProjectEnableCppWinRTSupport>
     <CppWinRTGenerateWindowsMetadata>false</CppWinRTGenerateWindowsMetadata>
     <MileProjectUseProjectProperties>true</MileProjectUseProjectProperties>
@@ -18,7 +19,6 @@
   </PropertyGroup>
   <Import Project="..\NanaZip.Project\NanaZip.Project.props" />
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.x64.props" />
-  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.ARM64.props" />
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.Default.props" />
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.props" />
   <Import Project="..\NanaZip.Project\NanaZip.Project.Runtime.props" />
@@ -34,7 +34,6 @@
       <LargeAddressAware>true</LargeAddressAware>
       <MinimumRequiredVersion>10.0</MinimumRequiredVersion>
       <AdditionalDependencies>Shlwapi.lib;runtimeobject.lib;comctl32.lib;htmlhelp.lib;comdlg32.lib;Mpr.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <DelayLoadDLLs>mpr.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

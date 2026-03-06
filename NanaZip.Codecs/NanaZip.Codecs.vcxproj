@@ -4,7 +4,8 @@
     <ProjectGuid>{89B81A5B-FF0D-4193-9CB1-738692775DD2}</ProjectGuid>
     <RootNamespace>NanaZip.Codecs</RootNamespace>
     <MileProjectType>DynamicLibrary</MileProjectType>
-    <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformMinVersion>10.0.26100.0</WindowsTargetPlatformMinVersion>
+    <MileUniCrtDisableRuntimeDebuggingFeature>true</MileUniCrtDisableRuntimeDebuggingFeature>
     <MileProjectUseProjectProperties>true</MileProjectUseProjectProperties>
     <MileProjectCompanyName>M2-Team</MileProjectCompanyName>
     <MileProjectFileDescription>NanaZip Codecs</MileProjectFileDescription>
@@ -16,7 +17,6 @@
   </PropertyGroup>
   <Import Project="..\NanaZip.Project\NanaZip.Project.props" />
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.x64.props" />
-  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.ARM64.props" />
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.Default.props" />
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.props" />
   <Import Condition="'$(Platform)' == 'x64'" Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />

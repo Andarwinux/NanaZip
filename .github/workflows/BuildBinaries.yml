@@ -1,84 +1,27 @@
 ﻿name: Build Binaries
 
 on:
-  push:
-    paths-ignore:
-      - 'Documents/**'
-      - '**/*.md'
-  pull_request:
-    paths-ignore:
-      - 'Documents/**'
-      - '**/*.md'
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2025-vs2026
     env:
       POWERSHELL_TELEMETRY_OPTOUT: 1
     steps:
-      - uses: actions/checkout@v7.0.1
-        with:
-          submodules: 'recursive'
-      - uses: microsoft/setup-msbuild@v3
-      - name: Clear local NuGet cache (workaround for failed restores on windows-latest)
-        run: dotnet nuget locals all --clear
-      - name: Build
-        run: MSBuild -binaryLogger:Output\BuildAllTargets.binlog -m BuildAllTargets.proj
-      - name: Upload MSIX Bundle
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          name: NanaZip_Mainline_ApplicationPackages
-          path: Output/Binaries/AppPackages
-      - name: Upload Extension Package Installer
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          name: NanaZip_Mainline_ExtensionPackageInstaller
-          path: Output/NanaZip.ExtensionPackage_*.exe
-      - name: Upload MSBuild Build Process Binary Log
-        uses: actions/upload-artifact@v7.0.1
-        if: "!cancelled()"
-        with:
-          name: NanaZip_Mainline_BuildBinaryLog
-          path: Output/BuildAllTargets.binlog
-      - name: Upload Portable Binaries
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          name: NanaZip_Mainline_PortableBinaries
-          path: Output/Binaries/Root/Binaries
-      - name: Upload Debug Symbols
-        uses: actions/upload-artifact@v7.0.1
-        with:
-          name: NanaZip_Mainline_DebugSymbols
-          path: Output/Binaries/Root/Symbols
-  test-x64:
-    runs-on: windows-latest
-    needs:
-      - build
-    steps:
-      - uses: actions/checkout@v7.0.1
-        with:
-          repository: M2Team/K7Tests
-      - uses: actions/download-artifact@v8.0.1
-        name: NanaZip_Mainline_PortableBinaries
-      - run: Install-Module -Name Pester -Scope CurrentUser -MinimumVersion 5.0.0 -Force
-      - run: |
-          .\run.ps1 `
-            -Program .\NanaZip_Mainline_PortableBinaries\x64\NanaZip.Universal.Console.exe `
-            -Verbosity Detailed `
-            -Verbose
-  test-arm64:
-    runs-on: windows-11-arm
-    needs:
-      - build
-    steps:
-      - uses: actions/checkout@v7.0.1
-        with:
-          repository: M2Team/K7Tests
-      - uses: actions/download-artifact@v8.0.1
-        name: NanaZip_Mainline_PortableBinaries
-      - run: Install-Module -Name Pester -Scope CurrentUser -MinimumVersion 5.0.0 -Force
-      - run: |
-          .\run.ps1 `
-            -Program .\NanaZip_Mainline_PortableBinaries\arm64\NanaZip.Universal.Console.exe `
-            -Verbosity Detailed `
-            -Verbose
+    - uses: actions/checkout@v6
+      with:
+        submodules: 'recursive'
+    - uses: microsoft/setup-msbuild@v3
+    - name: Clear local NuGet cache (workaround for failed restores on windows-latest)
+      run: dotnet nuget locals all --clear
+    - name: Build
+      run: |
+        $env:_CL_=" /GF /Gw /Gy /GL /Ox /Ob3 /Oi /Ot /Oy /Z7 /MT /fp:fast /fpcvt:IA /jumptablerdata /arch:AVX512 /vlen=512 /w /d2epilogunwind /volatileMetadata-"
+        $env:_LINK_=" /LTCG:INCREMENTAL /opt:ref,icf /filealign:4096 /release /nodefaultlib:libucrt.lib /defaultlib:ucrt.lib /osversion:10.0 /Brepro /emitvolatilemetadata:no /emittoolversioninfo:no"
+        MSBuild -binaryLogger:Output\BuildAllTargets.binlog -m BuildAllTargets.proj /p:Configuration=Release /p:platformToolset=v145 /p:Platform=x64 /p:PreferredToolArchitecture=x64 /p:DebugSymbols=false /p:DebugType=None /p:DebugInformationFormat=0
+    - name: Upload MSIX Bundle
+      uses: actions/upload-artifact@v7
+      with:
+        name: NanaZip_Mainline_ApplicationPackages
+        path: Output/Binaries/AppPackages

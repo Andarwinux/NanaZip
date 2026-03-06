@@ -4,7 +4,7 @@
     <ProjectGuid>{86E818B3-D657-4E03-9336-48EE242A79D1}</ProjectGuid>
     <RootNamespace>NanaZip.Universal.Console</RootNamespace>
     <MileProjectType>ConsoleApplication</MileProjectType>
-    <WindowsTargetPlatformMinVersion>10.0.19041.0</WindowsTargetPlatformMinVersion>
+    <WindowsTargetPlatformMinVersion>10.0.26100.0</WindowsTargetPlatformMinVersion>
     <MileProjectManifestFile>NanaZip.Universal.Console.manifest</MileProjectManifestFile>
     <MileProjectUseProjectProperties>true</MileProjectUseProjectProperties>
     <MileProjectCompanyName>M2-Team</MileProjectCompanyName>
@@ -17,7 +17,6 @@
   </PropertyGroup>
   <Import Project="..\NanaZip.Project\NanaZip.Project.props" />
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.x64.props" />
-  <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Platform.ARM64.props" />
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.Default.props" />
   <Import Sdk="Mile.Project.Configurations" Project="Mile.Project.Cpp.props" />
   <Import Condition="'$(Platform)' == 'x64'" Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
